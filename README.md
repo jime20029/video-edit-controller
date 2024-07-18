@@ -26,7 +26,7 @@ python3 -m venv .venv
 #### 仮想環境のアクティブ化
 
 ```
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 #### 各種ライブラリのインストール
