@@ -11,20 +11,20 @@ def generate_key_pair():
     return private_key, public_key
 
 # 動画に署名
-def sign_original_video(private_key, original_video, allowed_deletion_list):
+def sign_original_video_segments(private_key, original_video_segments, allowed_segment_combinations_list):
     key = RSA.import_key(private_key)
 
     # リストを文字列に変換
-    data_str = ''.join(original_video)
+    data_str = ''.join(original_video_segments)
 
     # 文字列をバイト列に変換
-    original_video_bytes = data_str.encode('utf-8')
-    hash_for_original_video = SHA256.new(original_video_bytes).digest()
+    original_video_segments_bytes = data_str.encode('utf-8')
+    hash_for_original_video_segments = SHA256.new(original_video_segments_bytes).digest()
 
-    allowed_deletion_list_bytes = pickle.dumps(allowed_deletion_list)
-    hash_for_allowed_deletion_list = SHA256.new(allowed_deletion_list_bytes).digest()
+    allowed_segment_combinations_list_bytes = pickle.dumps(allowed_segment_combinations_list)
+    hash_for_allowed_segment_combinations_list = SHA256.new(allowed_segment_combinations_list_bytes).digest()
 
-    combined_hash = SHA256.new(hash_for_original_video + hash_for_allowed_deletion_list)
+    combined_hash = SHA256.new(hash_for_original_video_segments + hash_for_allowed_segment_combinations_list)
 
     signer = PKCS1_v1_5.new(key)
     signature = signer.sign(combined_hash)
