@@ -1,6 +1,6 @@
 import pickle
 from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
+from Crypto.Signature import pss
 from Crypto.Hash import SHA256
 
 # 鍵ペアの生成
@@ -26,6 +26,6 @@ def sign_original_video_segments(private_key, original_video_segments, allowed_s
 
     combined_hash = SHA256.new(hash_for_original_video_segments + hash_for_allowed_segment_combinations_list)
 
-    signer = PKCS1_v1_5.new(key)
+    signer = pss.new(key)
     signature = signer.sign(combined_hash)
     return signature

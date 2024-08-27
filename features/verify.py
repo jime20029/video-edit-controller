@@ -1,6 +1,6 @@
 import pickle
 from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
+from Crypto.Signature import pss
 from Crypto.Hash import SHA256
 
 # 削除が適切かどうか判定する関数
@@ -32,10 +32,16 @@ def verify(original_video_segments_segments, clipped_video_segments, allowed_seg
 
     h = SHA256.new(combined_hash)
 
-    verifier = PKCS1_v1_5.new(key)
+    verifier = pss.new(key)
+    try:
+        verifier.verify(h, signature)
+        print("The signature is authentic.")
+    except (ValueError, TypeError):
+        print("The signature is not authentic.")
+        return False
 
     # 署名が正当かつ編集が適切ならTrueを返す
-    if verifier.verify(h, signature) and is_proper_clipped_video_segments:
+    if is_proper_clipped_video_segments:
         return True
     else:
         return False
