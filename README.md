@@ -1,4 +1,4 @@
-# video-edit-controler
+# video-edit-controller
 
 ## 概要
 
